@@ -27,5 +27,10 @@ pipeline {
         sh "docker push osiris65/calculator"
       }
     }
+    stage("Deploy to staging") {
+      steps {
+        sh "docker run -d --rm 8765:8080 --name calculator osiris65/calculator"
+      }
+    }
   }
 }
