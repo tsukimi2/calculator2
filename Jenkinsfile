@@ -8,7 +8,9 @@ pipeline {
       }
     }
     stage("Unit test") {
-      sh "./gradlew test"
+      steps {
+        sh "./gradlew test"
+      }
     }
   }
 }
