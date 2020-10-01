@@ -1,4 +1,10 @@
 pipeline {
+  environment {
+    registry = 'osiris65/calculator'
+    registryCredential = 'dockerhubCredential'
+    dockerImage = ''
+  }
+
   agent any
 
   stages {
@@ -19,12 +25,18 @@ pipeline {
     }
     stage("Docker build") {
       steps {
-        sh "docker build -t osiris65/calculator ."
+        script {
+          dockerImage = docker.build registry
+        }
       }
     }
     stage("Docker push") {
       steps {
-        sh "docker push osiris65/calculator"
+        script {
+          docker.withRegistry('', registryCredential) {
+            dockerImage.push()
+          }
+        }
       }
     }
     stage("Deploy to staging") {
@@ -43,6 +55,7 @@ pipeline {
   post {
     always {
       sh "docker stop calculator"
+      sh "docker rmi $registry"
     }
   }
 }
