@@ -57,7 +57,6 @@ pipeline {
   post {
     always {
       sh "docker stop calculator"
-      sh "docker container rm calculator"
       sh "docker rmi $registry"
     }
   }
