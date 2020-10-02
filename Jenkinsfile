@@ -4,8 +4,9 @@ pipeline {
     registryCredential = 'dockerhubCredential'
     dockerId = ''
     dockerPwd = ''
-    dockerImage = ''
   }
+
+  def dockerImage = ''
 
   agent any
 
@@ -34,12 +35,8 @@ pipeline {
     }
     stage("Docker push") {
       steps {
-        script {
-        withCredentials([usernamePassword(credentialsId: 'dockerhubCredential', passwordVariable: 'DOCKER_HUB_PWD', usernameVariable: 'DOCKER_HUB_USERNAME')]) {
-          dockerId = DOCKER_HUB_USERNAME
-          dockerPwd = DOCKER_HUB_PWD
-          sh "echo ${dockerPwd} | docker login --username ${dockerId}--password-stdin"
-        }
+        docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
+          dockerImage.push()
         }
       }
     }
