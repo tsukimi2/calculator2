@@ -4,9 +4,8 @@ pipeline {
     registryCredential = 'dockerhubCredential'
     dockerId = ''
     dockerPwd = ''
+    dockerImage = ''
   }
-
-  def dockerImage = ''
 
   agent any
 
