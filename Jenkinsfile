@@ -2,6 +2,8 @@ pipeline {
   environment {
     registry = 'osiris65/calculator'
     registryCredential = 'dockerhubCredential'
+    dockerId = ''
+    dockerPwd = ''
     dockerImage = ''
   }
 
@@ -33,7 +35,9 @@ pipeline {
     stage("Docker push") {
       steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhubCredential', passwordVariable: 'DOCKER_HUB_PWD', usernameVariable: 'DOCKER_HUB_USERNAME')]) {
-          sh "echo ${DOCKER_HUB_PWD} | docker login --username ${DOCKER_HUB_USERNAME}--password-stdin"
+          dockerId = DOCKER_HUB_USERNAME
+          dockerPwd = DOCKER_HUB_PWD
+          sh "echo ${dockerPwd} | docker login --username ${dockerId}--password-stdin"
         }
       }
     }
