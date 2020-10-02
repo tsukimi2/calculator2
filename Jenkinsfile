@@ -49,7 +49,8 @@ pipeline {
     stage("Acceptance test") {
       steps {
         sleep 120
-        sh "chmod +x acceptance_test.sh && curl localhost:8765/sum?a=1\&b=2" 
+        sh "chmod +x acceptance_test.sh" 
+        sh "curl localhost:8765/sum?a=1\&b=2"
       }
     }
   }
