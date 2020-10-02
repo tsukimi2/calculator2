@@ -43,13 +43,13 @@ pipeline {
     }
     stage("Deploy to staging") {
       steps {
-        sh "docker run -d -p 8765:8080 --name calculator osiris65/calculator"
+        sh "docker run -d --rm -p 8765:8080 --name calculator osiris65/calculator"
       }
     }
     stage("Acceptance test") {
       steps {
         sleep 60
-        sh "./acceptance_test.sh" 
+        sh "chmod +x acceptance_test.sh && ./acceptance_test.sh" 
       }
     }
   }
@@ -57,6 +57,7 @@ pipeline {
   post {
     always {
       sh "docker stop calculator"
+      sh "docker container rm calculator"
       sh "docker rmi $registry"
     }
   }
